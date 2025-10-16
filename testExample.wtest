@@ -1,9 +1,85 @@
-import example.pepita
+import example.*
 
-describe "group of tests for pepita" {
+describe "test de rodados" {
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  const deportes = new Dependencia(empleados = 45)
+  const cultura = new Dependencia(empleados = 31)
+  const cachito = new Corsa(color="rojo")
+  method initialize(){
+    deportes.agregarAFlota(cachito)
+    deportes.agregarAFlota(new Corsa(color="azul"))
+    deportes.agregarAFlota(new Corsa(color="verde"))
+    deportes.agregarAFlota(new Kwid(tieneGas=true))
+    deportes.agregarAFlota(new Especial(pasajeros=5,velocidad=160,peso=1200,color="beige"))
+    
+    cultura.agregarAFlota(cachito)
+    cultura.agregarAFlota(new Kwid(tieneGas=true))
+    cultura.agregarAFlota(new Kwid(tieneGas=true))
+    cultura.agregarAFlota(new Kwid())
+    trafic.cambiarInterior(popular)
+    trafic.cambiarMotor(bataton)
+    cultura.agregarAFlota(trafic)
   }
 
+  test "peso total de la flota deportes" {
+    console.println("Peso total flota deportes: "+deportes.pesoTotalFlota())
+    assert.equals(6450, deportes.pesoTotalFlota())
+    
+  }
+
+  test "peso total de la flota cultura" {
+    console.println("Peso total flota deportes: "+cultura.pesoTotalFlota())
+    assert.equals(10700, cultura.pesoTotalFlota())
+    
+  }
+
+  test "deportes esta bien equipada" {
+    assert.that(deportes.estaBienEquipada())
+  }
+
+ test "cultura no esta bien equipada" {
+    assert.notThat(cultura.estaBienEquipada())
+  }
+
+  test "capacidad en color azul" {
+    assert.equals(7,deportes.capacidadTotalEnColor("azul"))
+  }
+
+  test "beige es el color del rodado mas rapido" {
+    assert.equals("beige",deportes.colorDelRodadoMasRapido())
+  }
+
+  test "deportes es grande" {
+    assert.that(deportes.esGrande())
+  }
+
+  test "capacidad " {
+    assert.equals(25, deportes.capacidadFaltante())
+  }
+}
+
+describe "test de pedidos" {
+  const pedido1 = new Pedido(distancia = 960, tiempoMaximo=8,cantPasajeros=4,coloresIncompatibles=#{"azul","negro"})
+
+  const cachito = new Corsa(color="rojo")
+  test "cachito puede satisfacer al pedido 1" {
+    // console.println("auto es colores incompatibles "+pedido1.autoNoSeaColorIncompatible(cachito))
+    assert.that(pedido1.autoPuedeSatisfacer(cachito))
+  }
+
+  test "cachito ya no satisface el pedido 1" {
+    // pedido1.agregarColor("rojo")
+    pedido1.cantPasajeros(6)
+
+    // console.println("colores incompatibles "+pedido1.coloresIncompatibles())
+    // console.println("auto es colores incompatibles "+pedido1.autoNoSeaColorIncompatible(cachito))
+    assert.notThat(pedido1.autoPuedeSatisfacer(cachito))
+  }
+
+  test "cachito no satisface pedido 1 cambiando el tiempo maximo del pedido a 6 horas" {
+    pedido1.tiempoMaximo(6)
+
+    assert.equals(160, pedido1.velocidadRequerida())
+    assert.notThat(pedido1.autoPuedeSatisfacer(cachito))
+  }
 }
